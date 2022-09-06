@@ -12,6 +12,16 @@ let mostrarLista;
 let nuevoCalculo;
 let listaResultados = [];
 
+// CLASES
+class Dato {
+  constructor(altura, peso, genero, resultado) {
+    this.altura = altura;
+    this.peso = peso;
+    this.genero = genero;
+    this.resultado = resultado;
+  }
+}
+
 // FUNCIONES
 let asignaValores = () => {
   // Asigna valores iniciales
@@ -47,11 +57,12 @@ let calcularVolumen = (altura, peso, valorGenero) => {
   // Calcula el volumen total del agua a tomar, según parámetros.
   // Guarda resultados en una lista.
   resultado = ((altura / peso) * valorGenero).toFixed(2);
+  dato = new Dato(altura, peso, genero, resultado);
   listaResultados.push(
-    `Altura: ${altura}\n
-    Peso: ${peso}\n
-    Género: ${genero}\n
-    Cantidad de agua: ${resultado}lts.`
+    `Altura: ${dato.altura}\n
+    Peso: ${dato.peso}\n
+    Género: ${dato.genero}\n
+    Cantidad de agua: ${dato.resultado}lts.`
   );
   return resultado;
 };
