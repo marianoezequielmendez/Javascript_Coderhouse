@@ -1,56 +1,57 @@
 // VARIABLES
-let height;
-let weight;
-let gender;
-let genderCalculator = 0;
-let checker = true;
-let calcular;
+let altura;
+let peso;
+let genero;
+let valorGenero = 0;
+let verificador = true;
+let mostrarResultado;
+let listaResultados= []
 
 // FUNCIONES
 let asignaValores = () => {
   // Asigna valores iniciales
-  height = parseFloat(prompt("¿Cuál es su altura?"));
-  weight = parseFloat(prompt("¿Cuál es su peso?"));
-  gender = prompt(
+  altura = parseFloat(prompt("¿Cuál es su altura?"));
+  peso = parseFloat(prompt("¿Cuál es su peso?"));
+  genero = prompt(
     "¿Cuál es su género? (H(Hombre), M(Mujer), O(Otro))"
   ).toUpperCase();
 };
 
-let genderCheck = (checker, gender) => {
+let verificaGenero = (verificador, genero) => {
   // Verifica si el género es correcto y asigna un puntaje.
-  while (checker) {
-    if (gender == "H") {
-      genderCalculator = 1.5;
-      checker = false;
-    } else if (gender == "M") {
-      genderCalculator = 1.2;
-      checker = false;
-    } else if (gender == "O") {
-      genderCalculator = 1.5;
-      checker = false;
+  while (verificador) {
+    if (genero == "H") {
+      valorGenero = 1.5;
+      verificador = false;
+    } else if (genero == "M") {
+      valorGenero = 1.2;
+      verificador = false;
+    } else if (genero == "O") {
+      valorGenero = 1.5;
+      verificador = false;
     } else {
-      gender = prompt(
+      genero = prompt(
         "Debé seleccionar uno de los siguientes géneros: H(Hombre), M(Mujer), O(Otro)"
       ).toUpperCase();
     }
   }
-  return checker;
+  return verificador;
 };
 
-let calcularVolumen = (height, weight, genderCalculator) => {
+let calcularVolumen = (altura, peso, valorGenero) => {
   // Calcula el volumen total del agua a tomar, según parámetros.
-  return ((height / weight) * genderCalculator).toFixed(2);
+  return ((altura / peso) * valorGenero).toFixed(2);
 };
 
 let resultado = () => {
-  calcular = confirm("¿Desea calcular su volumen?");
+  mostrarResultado = confirm("¿Desea calcular su volumen?");
 
-  if (calcular) {
+  if (mostrarResultado) {
     alert(
       `Ustede debe beber ${calcularVolumen(
-        height,
-        weight,
-        genderCalculator
+        altura,
+        peso,
+        valorGenero
       )} lts de agua por día.`
     );
   } else {
@@ -60,8 +61,8 @@ let resultado = () => {
 
 // LLAMAR FUNCIONES
 asignaValores();
-genderCheck(checker, gender);
-calcularVolumen(height, weight, genderCalculator);
+verificaGenero(verificador, genero);
+calcularVolumen(altura, peso, valorGenero);
 resultado();
 
 // FALTA POR HACER
