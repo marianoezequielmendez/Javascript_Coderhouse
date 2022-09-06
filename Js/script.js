@@ -1,11 +1,16 @@
+// Se agregó un array "listaResultados" y se utilizó el método push.
+
 // VARIABLES
 let altura;
 let peso;
 let genero;
 let valorGenero = 0;
 let verificador = true;
+let resultado;
 let mostrarResultado;
-let listaResultados= []
+let mostrarLista;
+let nuevoCalculo;
+let listaResultados = [];
 
 // FUNCIONES
 let asignaValores = () => {
@@ -40,30 +45,62 @@ let verificaGenero = (verificador, genero) => {
 
 let calcularVolumen = (altura, peso, valorGenero) => {
   // Calcula el volumen total del agua a tomar, según parámetros.
-  return ((altura / peso) * valorGenero).toFixed(2);
+  // Guarda resultados en una lista.
+  resultado = ((altura / peso) * valorGenero).toFixed(2);
+  listaResultados.push(
+    `Altura: ${altura}\n
+    Peso: ${peso}\n
+    Género: ${genero}\n
+    Cantidad de agua: ${resultado}lts.`
+  );
+  return resultado;
 };
 
-let resultado = () => {
+let conocerResultado = () => {
+  // Muestra el resultado  parcial.
   mostrarResultado = confirm("¿Desea calcular su volumen?");
 
   if (mostrarResultado) {
-    alert(
-      `Ustede debe beber ${calcularVolumen(
-        altura,
-        peso,
-        valorGenero
-      )} lts de agua por día.`
-    );
+    alert(`Ustede debe beber ${resultado} lts de agua por día.`);
+  } else {
+    alert("Su registro quedo guardado en la lista de resultados.");
+  }
+};
+
+let mostrarListaResultados = () => {
+  // Muestra la lista de resultados
+  mostrarLista = confirm("¿Desea ver su lista de resultados?");
+
+  if (mostrarLista) {
+    for (let res of listaResultados) {
+      alert(res);
+    }
   } else {
     alert("Gracias por su visita");
   }
 };
 
-// LLAMAR FUNCIONES
-asignaValores();
-verificaGenero(verificador, genero);
-calcularVolumen(altura, peso, valorGenero);
-resultado();
+let llamarFunciones = () => {
+  asignaValores();
+  verificaGenero(verificador, genero);
+  calcularVolumen(altura, peso, valorGenero);
+  conocerResultado();
+  agregarCalculo();
+};
+
+let agregarCalculo = () => {
+  // Consulta por un nuevo calculo
+  nuevoCalculo = confirm("¿Desea realizar otra consulta?");
+
+  if (nuevoCalculo) {
+    llamarFunciones();
+  } else {
+    mostrarListaResultados();
+  }
+};
+
+// INICIO
+llamarFunciones();
 
 // FALTA POR HACER
 // Agregar interacción con los botones para ir calculando el agua bebida hasta el momento.
