@@ -1,4 +1,5 @@
-// Se agregó un array "listaResultados" y se utilizó el método push.
+// Se agregó la función creacionDOM que va agregando items con los resultados de los calculos realizados.
+// Se modifica etiqueta h2 con resultado actual del calculo.
 
 // VARIABLES
 let altura;
@@ -11,6 +12,10 @@ let mostrarResultado;
 let mostrarLista;
 let nuevoCalculo;
 let listaResultados = [];
+
+//DOM
+let mensaje = document.getElementById("mensaje");
+let resultados = document.getElementById("resultados");
 
 // CLASES
 class Dato {
@@ -58,12 +63,14 @@ let calcularVolumen = (altura, peso, valorGenero) => {
   // Guarda resultados en una lista.
   resultado = ((altura / peso) * valorGenero).toFixed(2);
   dato = new Dato(altura, peso, genero, resultado);
-  listaResultados.push(
-    `Altura: ${dato.altura}\n
-    Peso: ${dato.peso}\n
-    Género: ${dato.genero}\n
-    Cantidad de agua: ${dato.resultado}lts.`
-  );
+
+  let informacion = `Altura: ${dato.altura}<br>
+  Peso: ${dato.peso}<br>
+  Género: ${dato.genero}<br>
+  Cantidad de agua: ${dato.resultado}lts.`;
+
+  listaResultados.push(informacion);
+  creacionDOM(informacion);
   return resultado;
 };
 
@@ -72,10 +79,31 @@ let conocerResultado = () => {
   mostrarResultado = confirm("¿Desea calcular su volumen?");
 
   if (mostrarResultado) {
-    alert(`Ustede debe beber ${resultado} lts de agua por día.`);
+    alert(`Usted debe beber ${resultado} lts de agua por día.`);
+    mensaje.innerHTML = `Usted debe beber ${resultado} lts de agua por día.`;
   } else {
     alert("Su registro quedo guardado en la lista de resultados.");
+    mensaje.innerHTML = `Su registro quedo guardado en la lista de resultados.`;
   }
+};
+
+let agregarCalculo = () => {
+  // Consulta por un nuevo calculo
+  nuevoCalculo = confirm("¿Desea realizar otra consulta?");
+
+  if (nuevoCalculo) {
+    llamarFunciones();
+  } else {
+    mostrarListaResultados();
+  }
+};
+
+let creacionDOM = (datos) => {
+  let p = document.createElement("p");
+  p.className =
+    "d-flex justify-content-center my-2 bg-primary bg-gradient rounded-1 text-light p-3";
+  p.innerHTML = `${datos}`;
+  resultados.append(p);
 };
 
 let mostrarListaResultados = () => {
@@ -97,17 +125,6 @@ let llamarFunciones = () => {
   calcularVolumen(altura, peso, valorGenero);
   conocerResultado();
   agregarCalculo();
-};
-
-let agregarCalculo = () => {
-  // Consulta por un nuevo calculo
-  nuevoCalculo = confirm("¿Desea realizar otra consulta?");
-
-  if (nuevoCalculo) {
-    llamarFunciones();
-  } else {
-    mostrarListaResultados();
-  }
 };
 
 // INICIO

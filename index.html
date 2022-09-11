@@ -22,7 +22,7 @@
         <h1 class="h1">Control de ingesta de agua</h1>
       </header>
       <main id="main" class="m-5 min-vh-100">
-        <section class="maprimaryrm my-2 p-2">
+        <section class="my-2 p-2">
           <form method="get">
             <div class="row mb-3">
               <label for="height" class="col-sm-2 col-form-label"
@@ -86,15 +86,10 @@
           </form>
           <h2
             class="h2 d-flex justify-content-center my-5 bg-primary bg-gradient rounded-1 text-light p-3"
+            id="mensaje"
           >
             Ingrese los datos para calcular la ingesta de agua diaria.
           </h2>
-          <!-- !El segundo H2 debe aparecer al calcular volumen -->
-          <!-- <h2
-            class="h2 d-flex justify-content-center my-5 bg-primary bg-gradient rounded-1 text-light p-3"
-          >
-            Usted debe beber en total {Cantidad} de agua en el día.
-          </h2> -->
         </section>
         <section class="buttons my-2 p-2">
           <div class="d-flex justify-content-around">
@@ -121,6 +116,10 @@
           >
             25%
           </div>
+        </section>
+        <section>
+          <h2 class="h2 my-5">Lista de resultados</h2>
+          <div id="resultados"></div>
         </section>
       </main>
       <!-- TODO: Mensaje de objetivo alcanzado -->
