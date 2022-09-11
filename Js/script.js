@@ -1,21 +1,19 @@
-// Se agregó la función creacionDOM que va agregando items con los resultados de los calculos realizados.
-// Se modifica etiqueta h2 con resultado actual del calculo.
+// Se agregarons los eventos de 'Change' y 'Submit' al final del archivo.
 
 // VARIABLES
 let altura;
 let peso;
 let genero;
 let valorGenero = 0;
-let verificador = true;
 let resultado;
-let mostrarResultado;
-let mostrarLista;
-let nuevoCalculo;
-let listaResultados = [];
 
 //DOM
+let formulario = document.getElementById("formulario");
 let mensaje = document.getElementById("mensaje");
 let resultados = document.getElementById("resultados");
+let infoAltura = document.getElementById("height");
+let infoPeso = document.getElementById("weight");
+let opcionesGeneros = document.getElementById("opcionesGeneros");
 
 // CLASES
 class Dato {
@@ -28,39 +26,32 @@ class Dato {
 }
 
 // FUNCIONES
-let asignaValores = () => {
-  // Asigna valores iniciales
-  altura = parseFloat(prompt("¿Cuál es su altura?"));
-  peso = parseFloat(prompt("¿Cuál es su peso?"));
-  genero = prompt(
-    "¿Cuál es su género? (H(Hombre), M(Mujer), O(Otro))"
-  ).toUpperCase();
+let asignaValores = (e) => {
+  e.preventDefault();
+
+  altura = infoAltura.value;
+  peso = infoPeso.value;
+
+  infoAltura.value = "";
+  infoPeso.value = "";
+
+  llamarFunciones();
 };
 
-let verificaGenero = (verificador, genero) => {
-  // Verifica si el género es correcto y asigna un puntaje.
-  while (verificador) {
-    if (genero == "H") {
-      valorGenero = 1.5;
-      verificador = false;
-    } else if (genero == "M") {
-      valorGenero = 1.2;
-      verificador = false;
-    } else if (genero == "O") {
-      valorGenero = 1.5;
-      verificador = false;
-    } else {
-      genero = prompt(
-        "Debé seleccionar uno de los siguientes géneros: H(Hombre), M(Mujer), O(Otro)"
-      ).toUpperCase();
-    }
+let valorarGenero = (genero) => {
+  // Asigna un puntaje al género.
+  if (genero == "Hombre") {
+    valorGenero = 1.5;
+  } else if (genero == "Mujer") {
+    valorGenero = 1.2;
+  } else if (genero == "Otro") {
+    valorGenero = 1.5;
   }
-  return verificador;
 };
 
 let calcularVolumen = (altura, peso, valorGenero) => {
   // Calcula el volumen total del agua a tomar, según parámetros.
-  // Guarda resultados en una lista.
+  // Genera objeto con datos.
   resultado = ((altura / peso) * valorGenero).toFixed(2);
   dato = new Dato(altura, peso, genero, resultado);
 
@@ -69,33 +60,12 @@ let calcularVolumen = (altura, peso, valorGenero) => {
   Género: ${dato.genero}<br>
   Cantidad de agua: ${dato.resultado}lts.`;
 
-  listaResultados.push(informacion);
   creacionDOM(informacion);
-  return resultado;
 };
 
-let conocerResultado = () => {
-  // Muestra el resultado  parcial.
-  mostrarResultado = confirm("¿Desea calcular su volumen?");
-
-  if (mostrarResultado) {
-    alert(`Usted debe beber ${resultado} lts de agua por día.`);
-    mensaje.innerHTML = `Usted debe beber ${resultado} lts de agua por día.`;
-  } else {
-    alert("Su registro quedo guardado en la lista de resultados.");
-    mensaje.innerHTML = `Su registro quedo guardado en la lista de resultados.`;
-  }
-};
-
-let agregarCalculo = () => {
-  // Consulta por un nuevo calculo
-  nuevoCalculo = confirm("¿Desea realizar otra consulta?");
-
-  if (nuevoCalculo) {
-    llamarFunciones();
-  } else {
-    mostrarListaResultados();
-  }
+let mostrarResultado = () => {
+  // Muestra el resultado en pantalla.
+  mensaje.innerHTML = `Usted debe beber ${resultado} lts de agua por día.`;
 };
 
 let creacionDOM = (datos) => {
@@ -106,29 +76,17 @@ let creacionDOM = (datos) => {
   resultados.append(p);
 };
 
-let mostrarListaResultados = () => {
-  // Muestra la lista de resultados
-  mostrarLista = confirm("¿Desea ver su lista de resultados?");
-
-  if (mostrarLista) {
-    for (let res of listaResultados) {
-      alert(res);
-    }
-  } else {
-    alert("Gracias por su visita");
-  }
-};
-
 let llamarFunciones = () => {
-  asignaValores();
-  verificaGenero(verificador, genero);
+  valorarGenero(genero);
   calcularVolumen(altura, peso, valorGenero);
-  conocerResultado();
-  agregarCalculo();
+  mostrarResultado();
 };
 
-// INICIO
-llamarFunciones();
+//Eventos
+opcionesGeneros.addEventListener(
+  "change",
+  () =>
+    (genero = document.querySelector("#opcionesGeneros input:checked").value)
+);
 
-// FALTA POR HACER
-// Agregar interacción con los botones para ir calculando el agua bebida hasta el momento.
+formulario.addEventListener("submit", asignaValores);
