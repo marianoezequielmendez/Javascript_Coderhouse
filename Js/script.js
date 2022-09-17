@@ -55,17 +55,17 @@ let calcularVolumen = (altura, peso, valorGenero) => {
   resultado = ((altura / peso) * valorGenero).toFixed(2);
   dato = new Dato(altura, peso, genero, resultado);
 
-  let informacion = `Altura: ${dato.altura}<br>
-  Peso: ${dato.peso}<br>
-  Género: ${dato.genero}<br>
-  Cantidad de agua: ${dato.resultado}lts.`;
+  if (altura == "" || peso == "" || genero == undefined) {
+    mensaje.innerHTML = `Por favor, ingrese todos los datos necesarios.`;
+  } else {
+    mensaje.innerHTML = `Usted debe beber ${resultado}lts de agua por día.`;
+    let informacion = `Altura: ${dato.altura}<br>
+    Peso: ${dato.peso}<br>
+    Género: ${dato.genero}<br>
+    Cantidad de agua: ${dato.resultado}lts.`;
 
-  creacionDOM(informacion);
-};
-
-let mostrarResultado = () => {
-  // Muestra el resultado en pantalla.
-  mensaje.innerHTML = `Usted debe beber ${resultado} lts de agua por día.`;
+    creacionDOM(informacion);
+  }
 };
 
 let creacionDOM = (datos) => {
@@ -79,7 +79,6 @@ let creacionDOM = (datos) => {
 let llamarFunciones = () => {
   valorarGenero(genero);
   calcularVolumen(altura, peso, valorGenero);
-  mostrarResultado();
 };
 
 //Eventos
