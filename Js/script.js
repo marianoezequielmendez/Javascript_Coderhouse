@@ -1,4 +1,4 @@
-// Se agregarons los eventos de 'Change' y 'Submit' al final del archivo.
+//
 
 // VARIABLES
 let altura;
@@ -6,6 +6,7 @@ let peso;
 let genero;
 let valorGenero = 0;
 let resultado;
+let localStorage_id;
 
 //DOM
 let formulario = document.getElementById("formulario");
@@ -74,6 +75,8 @@ let creacionDOM = (datos) => {
     "d-flex justify-content-center my-2 bg-primary bg-gradient rounded-1 text-light p-3";
   p.innerHTML = `${datos}`;
   resultados.append(p);
+  localStorage.setItem(`${localStorage_id}`, `${datos}`);
+  localStorage_id += 1;
 };
 
 let llamarFunciones = () => {
@@ -89,3 +92,21 @@ opcionesGeneros.addEventListener(
 );
 
 formulario.addEventListener("submit", asignaValores);
+
+// Inicio
+window.onload = function () {
+  for (let i = 0; i < localStorage.length; i++) {
+    let p = document.createElement("p");
+    p.className =
+      "d-flex justify-content-center my-2 bg-primary bg-gradient rounded-1 text-light p-3";
+    p.innerHTML = `${localStorage.getItem(localStorage.key(i))}`;
+    resultados.append(p);
+    localStorage_id = parseInt(localStorage.key(i));
+  }
+
+  if (localStorage_id == undefined) {
+    localStorage_id = 0;
+  } else {
+    localStorage_id += 1;
+  }
+};
