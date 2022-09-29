@@ -1,4 +1,6 @@
-//
+//Operador avanzados
+//Operador ternario Línea 48, 55, 125
+//Operador ++ línea 91, 125
 
 // VARIABLES
 let altura;
@@ -41,13 +43,9 @@ let asignaValores = (e) => {
 
 let valorarGenero = (genero) => {
   // Asigna un puntaje al género.
-  if (genero == "Hombre") {
-    valorGenero = 1.5;
-  } else if (genero == "Mujer") {
-    valorGenero = 1.2;
-  } else if (genero == "Otro") {
-    valorGenero = 1.5;
-  }
+  valorGenero = genero == "Hombre" ? 1.5 : genero == "Mujer" ? 1.2 : 1.3;
+
+  return valorGenero;
 };
 
 let calcularVolumen = (altura, peso, valorGenero) => {
@@ -76,7 +74,7 @@ let creacionDOM = (datos) => {
   p.innerHTML = `${datos}`;
   resultados.append(p);
   localStorage.setItem(`${localStorage_id}`, `${datos}`);
-  localStorage_id += 1;
+  localStorage_id++;
 };
 
 let llamarFunciones = () => {
@@ -104,9 +102,5 @@ window.onload = function () {
     localStorage_id = parseInt(localStorage.key(i));
   }
 
-  if (localStorage_id == undefined) {
-    localStorage_id = 0;
-  } else {
-    localStorage_id += 1;
-  }
+  localStorage_id == undefined ? (localStorage_id = 0) : localStorage_id++;
 };
