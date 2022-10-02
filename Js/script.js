@@ -1,6 +1,4 @@
-//Operador avanzados
-//Operador ternario Línea 48, 55, 125
-//Operador ++ línea 91, 125
+//Se agrego librería Luxon. Se declara dentro de variables y se utiliza en línea 65
 
 // VARIABLES
 let altura;
@@ -9,6 +7,8 @@ let genero;
 let valorGenero = 0;
 let resultado;
 let localStorage_id;
+const DateTime = luxon.DateTime;
+const dt = DateTime.now();
 
 //DOM
 let formulario = document.getElementById("formulario");
@@ -61,7 +61,8 @@ let calcularVolumen = (altura, peso, valorGenero) => {
     let informacion = `Altura: ${dato.altura}<br>
     Peso: ${dato.peso}<br>
     Género: ${dato.genero}<br>
-    Cantidad de agua: ${dato.resultado}lts.`;
+    Cantidad de agua: ${dato.resultado}lts.<br>
+    Fecha: ${dt.toLocaleString()} - ${dt.toLocaleString(DateTime.TIME_SIMPLE)}`;
 
     creacionDOM(informacion);
   }
