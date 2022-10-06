@@ -1,4 +1,4 @@
-//Se agrego librería Luxon. Se declara dentro de variables y se utiliza en línea 65
+//Se agrego API de clima. https://open-meteo.com/ Línea 34
 
 // VARIABLES
 let altura;
@@ -9,6 +9,8 @@ let resultado;
 let localStorage_id;
 const DateTime = luxon.DateTime;
 const dt = DateTime.now();
+const API_URL =
+  "https://api.open-meteo.com/v1/forecast?latitude=-34.6118&longitude=-58.4173&hourly=temperature_2m&current_weather=true";
 
 //DOM
 let formulario = document.getElementById("formulario");
@@ -28,7 +30,27 @@ class Dato {
   }
 }
 
+// APIs
+const fetchingTemp = async () => {
+  const resp = await fetch(API_URL);
+  const data = await resp.json();
+
+  let temperaturas = data.hourly.temperature_2m;
+  return temperaturas[getRandomInt(temperaturas.length)];
+};
+
+const Temperatura = () => {
+  return new Promise(async (resolve, reject) => {
+    resolve(fetchingTemp());
+  });
+};
+
 // FUNCIONES
+function getRandomInt(max) {
+  // Genera un número random entre 0 y max
+  return Math.floor(Math.random() * max);
+}
+
 let asignaValores = (e) => {
   e.preventDefault();
 
@@ -57,14 +79,19 @@ let calcularVolumen = (altura, peso, valorGenero) => {
   if (altura == "" || peso == "" || genero == undefined) {
     mensaje.innerHTML = `Por favor, ingrese todos los datos necesarios.`;
   } else {
-    mensaje.innerHTML = `Usted debe beber ${resultado}lts de agua por día.`;
-    let informacion = `Altura: ${dato.altura}<br>
-    Peso: ${dato.peso}<br>
-    Género: ${dato.genero}<br>
-    Cantidad de agua: ${dato.resultado}lts.<br>
-    Fecha: ${dt.toLocaleString()} - ${dt.toLocaleString(DateTime.TIME_SIMPLE)}`;
+    Temperatura().then((res) => {
+      mensaje.innerHTML = `Usted debe beber ${resultado}lts de agua por día.`;
+      let informacion = `Altura: ${dato.altura}<br>
+      Peso: ${dato.peso}<br>
+      Género: ${dato.genero}<br>
+      Cantidad de agua: ${dato.resultado}lts.<br>
+      Temperatura actual: ${res} C°<br>
+      Fecha: ${dt.toLocaleString()} - ${dt.toLocaleString(
+        DateTime.TIME_SIMPLE
+      )}`;
 
-    creacionDOM(informacion);
+      creacionDOM(informacion);
+    });
   }
 };
 
@@ -98,7 +125,9 @@ window.onload = function () {
     let p = document.createElement("p");
     p.className =
       "d-flex justify-content-center my-2 bg-primary bg-gradient rounded-1 text-light p-3";
+
     p.innerHTML = `${localStorage.getItem(localStorage.key(i))}`;
+
     resultados.append(p);
     localStorage_id = parseInt(localStorage.key(i));
   }
