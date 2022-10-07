@@ -1,4 +1,4 @@
-//Se agrego API de clima. https://open-meteo.com/ Línea 34
+// Version 1
 
 // VARIABLES
 let altura;
@@ -7,6 +7,7 @@ let genero;
 let valorGenero = 0;
 let resultado;
 let localStorage_id;
+let btnEliminar_id = 0;
 const DateTime = luxon.DateTime;
 const dt = DateTime.now();
 const API_URL =
@@ -78,9 +79,17 @@ let calcularVolumen = (altura, peso, valorGenero) => {
 
   if (altura == "" || peso == "" || genero == undefined) {
     mensaje.innerHTML = `Por favor, ingrese todos los datos necesarios.`;
+    setTimeout(() => {
+      mensaje.innerHTML =
+        "Ingrese los datos para calcular la ingesta de agua diaria.";
+    }, 2000);
   } else {
     Temperatura().then((res) => {
       mensaje.innerHTML = `Usted debe beber ${resultado}lts de agua por día.`;
+      setTimeout(() => {
+        mensaje.innerHTML =
+          "Ingrese los datos para calcular la ingesta de agua diaria.";
+      }, 3000);
       let informacion = `Altura: ${dato.altura}<br>
       Peso: ${dato.peso}<br>
       Género: ${dato.genero}<br>
@@ -97,17 +106,60 @@ let calcularVolumen = (altura, peso, valorGenero) => {
 
 let creacionDOM = (datos) => {
   let p = document.createElement("p");
+  btnEliminar_id++;
   p.className =
     "d-flex justify-content-center my-2 bg-primary bg-gradient rounded-1 text-light p-3";
-  p.innerHTML = `${datos}`;
+  p.innerHTML = `<section class="w-100 d-flex">
+    <div>
+      <button id="btnEliminar${btnEliminar_id}" class="btn-close btn-close-white"></button>
+    </div>
+    <div class="w-100 d-flex justify-content-center">${datos}</div>
+    </section>`;
   resultados.append(p);
   localStorage.setItem(`${localStorage_id}`, `${datos}`);
+  document
+    .getElementById(`btnEliminar${btnEliminar_id}`)
+    .addEventListener("click", () => {
+      p.innerHTML = "";
+      p.className = "";
+      localStorage.removeItem(localStorage.key(i));
+    });
   localStorage_id++;
 };
 
 let llamarFunciones = () => {
   valorarGenero(genero);
   calcularVolumen(altura, peso, valorGenero);
+};
+
+const Inicio = () => {
+  for (let i = 0; i < localStorage.length; i++) {
+    btnEliminar_id = i + 1;
+    let p = document.createElement("p");
+    p.className =
+      "d-flex justify-content-center my-2 bg-primary bg-gradient rounded-1 text-light p-3";
+
+    p.innerHTML = `<section class="w-100 d-flex">
+      <div>
+        <button id="btnEliminar${btnEliminar_id}" class="btn-close btn-close-white"></button>
+      </div>
+      <div class="w-100 d-flex justify-content-center">${localStorage.getItem(
+        localStorage.key(i)
+      )}</div>
+      </section>`;
+
+    resultados.append(p);
+    localStorage_id = parseInt(localStorage.key(i));
+    document
+      .getElementById(`btnEliminar${btnEliminar_id}`)
+      .addEventListener("click", () => {
+        p.innerHTML = "";
+        p.className = "";
+        localStorage.removeItem(localStorage.key(i));
+      });
+  }
+
+  localStorage_id == undefined ? (localStorage_id = 0) : localStorage_id++;
 };
 
 //Eventos
@@ -120,17 +172,4 @@ opcionesGeneros.addEventListener(
 formulario.addEventListener("submit", asignaValores);
 
 // Inicio
-window.onload = function () {
-  for (let i = 0; i < localStorage.length; i++) {
-    let p = document.createElement("p");
-    p.className =
-      "d-flex justify-content-center my-2 bg-primary bg-gradient rounded-1 text-light p-3";
-
-    p.innerHTML = `${localStorage.getItem(localStorage.key(i))}`;
-
-    resultados.append(p);
-    localStorage_id = parseInt(localStorage.key(i));
-  }
-
-  localStorage_id == undefined ? (localStorage_id = 0) : localStorage_id++;
-};
+Inicio();
